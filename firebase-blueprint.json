@@ -1,0 +1,40 @@
+{
+  "entities": {
+    "MoodEntry": {
+      "title": "Mood Entry",
+      "description": "Represents a single day's mood entry for a user",
+      "type": "object",
+      "properties": {
+        "emoji": {
+          "type": "string",
+          "enum": ["increible", "bien", "normal", "mal", "horrible"]
+        },
+        "nota": {
+          "type": "string",
+          "description": "Optional notes for the day"
+        },
+        "energia": {
+          "type": "string",
+          "enum": ["alta", "media", "baja"]
+        },
+        "palabra": {
+          "type": "string",
+          "description": "A single word summarizing the day"
+        },
+        "timestamp": {
+          "type": "number",
+          "description": "Creation or update timestamp in milliseconds"
+        }
+      },
+      "required": ["emoji", "energia", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/usuarios/{userId}/moods/{dateId}": {
+      "schema": {
+        "$ref": "#/entities/MoodEntry"
+      },
+      "description": "Collection of mood entries for a specific user, document ID is YYYY-MM-DD"
+    }
+  }
+}
