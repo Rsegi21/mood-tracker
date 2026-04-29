@@ -25,12 +25,12 @@ export default function MoodTracker() {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [entries, setEntries] = useState<Record<string, DailyEntry>>({});
-  
+
   // Auth & Sync State
   const [user, setUser] = useState<User | null>(null);
   const [syncMode, setSyncMode] = useState<'local' | 'cloud' | 'error'>('local');
   const [syncErrorMsg, setSyncErrorMsg] = useState('');
-  
+
   // Form State
   const [selectedMood, setSelectedMood] = useState<MoodType | null>(null);
   const [note, setNote] = useState('');
@@ -77,7 +77,7 @@ export default function MoodTracker() {
   useEffect(() => {
     const dateStr = selectedDate.toISOString().split('T')[0];
     const entry = entries[dateStr];
-    
+
     if (entry) {
       setSelectedMood(entry.emoji);
       setNote(entry.nota);
@@ -114,7 +114,7 @@ export default function MoodTracker() {
     if (!selectedMood || !energy) return;
 
     setIsSaving(true);
-    
+
     const dateStr = selectedDate.toISOString().split('T')[0];
     const newEntry: DailyEntry = {
       emoji: selectedMood,
@@ -132,7 +132,7 @@ export default function MoodTracker() {
         setSyncMode('cloud');
       } catch (e) {
         console.error("Error guardando en la nube:", e);
-        saveEntryLocal(dateStr, newEntry); 
+        saveEntryLocal(dateStr, newEntry);
         setEntries((prev) => ({ ...prev, [dateStr]: newEntry }));
         setSyncMode('error');
       }
@@ -140,7 +140,7 @@ export default function MoodTracker() {
       saveEntryLocal(dateStr, newEntry);
       setEntries(getLocalEntries());
     }
-    
+
     setTimeout(() => {
       setIsSaving(false);
     }, 600);
@@ -154,7 +154,7 @@ export default function MoodTracker() {
 
   const renderCalendarDays = () => {
     const days = [];
-    
+
     // Empty slots for previous month
     for (let i = 0; i < startOffset; i++) {
       days.push(<div key={`empty-${i}`} className="aspect-square rounded-xl bg-transparent"></div>);
@@ -227,31 +227,31 @@ export default function MoodTracker() {
           </div>
           <span className="text-2xl font-bold text-white tracking-tight font-headline">Mood Tracker</span>
         </div>
-        
+
         <div className="flex items-center gap-6">
           {!user ? (
-            <button 
+            <button
               onClick={handleLogin}
               className="hidden md:flex items-center gap-3 bg-white/10 px-4 py-2 rounded-full hover:bg-white/20 transition-colors"
             >
               <span className="text-xs text-[#94a3b8] font-medium">Inicia sesión con Google para guardar tu historial</span>
               <div className="pl-4 border-l border-white/20">
-                <span className="text-xs font-bold text-white">Conectar a la Nube</span>
+                <span className="text-xs font-bold text-white">67 Conectar a la Nube</span>
               </div>
             </button>
           ) : (
             <div className="hidden md:flex items-center gap-3 bg-white/10 px-4 py-2 rounded-full">
               <span className="text-xs text-[#94a3b8] font-medium">Sincronizado vía Nube</span>
               <div className="flex items-center gap-2 pl-4 border-l border-white/20">
-                <img 
-                  src={user.photoURL || "https://picsum.photos/seed/user/100/100"} 
-                  alt="Profile" 
+                <img
+                  src={user.photoURL || "https://picsum.photos/seed/user/100/100"}
+                  alt="Profile"
                   className="w-8 h-8 rounded-full bg-surface-variant object-cover"
                   referrerPolicy="no-referrer"
                 />
                 <div className="flex flex-col">
                   <span className="text-xs font-bold leading-none text-white max-w-[100px] truncate">{user.displayName || "Usuario"}</span>
-                  <button 
+                  <button
                     onClick={handleLogout}
                     className="text-[10px] text-[#94a3b8] text-left uppercase tracking-wider font-bold hover:text-white mt-1"
                   >
@@ -261,9 +261,9 @@ export default function MoodTracker() {
               </div>
             </div>
           )}
-          
+
           <div className="flex gap-2 md:hidden">
-            <button 
+            <button
               onClick={!user ? handleLogin : handleLogout}
               className="p-2 rounded-full hover:bg-white/10 transition-colors relative"
             >
@@ -285,13 +285,13 @@ export default function MoodTracker() {
               <p className="text-on-surface-variant font-body text-sm lg:text-base">Visualiza tu espectro emocional del mes.</p>
             </div>
             <div className="flex gap-2">
-              <button 
+              <button
                 onClick={() => setCurrentDate(new Date(currentYear, currentMonth - 1, 1))}
                 className="p-2 rounded-full bg-surface-container-high hover:bg-surface-bright transition-colors text-on-surface-variant border border-outline-variant"
               >
                 ←
               </button>
-              <button 
+              <button
                 onClick={() => setCurrentDate(new Date(currentYear, currentMonth + 1, 1))}
                 className="p-2 rounded-full bg-surface-container-high hover:bg-surface-bright transition-colors text-on-surface-variant border border-outline-variant"
               >
@@ -312,7 +312,7 @@ export default function MoodTracker() {
               {renderCalendarDays()}
             </div>
           </div>
-          
+
           <div className="mt-8 pt-6 border-t border-outline-variant/30 hidden md:block">
             {syncMode === 'local' && (
               <div className="flex items-center gap-3 p-4 bg-orange-50 border border-orange-200 rounded-lg text-orange-800 text-sm">
@@ -363,11 +363,10 @@ export default function MoodTracker() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => setSelectedMood(mood.type)}
-                      className={`group flex-1 min-w-0 flex flex-col items-center justify-center gap-1 sm:gap-2 transition-all p-1 sm:p-2 rounded-xl ${
-                        selectedMood === mood.type 
-                          ? 'ring-2 ring-primary bg-primary/10 scale-105 sm:scale-110' 
+                      className={`group flex-1 min-w-0 flex flex-col items-center justify-center gap-1 sm:gap-2 transition-all p-1 sm:p-2 rounded-xl ${selectedMood === mood.type
+                          ? 'ring-2 ring-primary bg-primary/10 scale-105 sm:scale-110'
                           : 'hover:bg-surface-bright'
-                      }`}
+                        }`}
                     >
                       <span className={`text-2xl sm:text-3xl transition-all ${selectedMood === mood.type ? 'grayscale-0 opacity-100' : 'grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100'}`}>
                         {mood.emoji}
@@ -386,11 +385,11 @@ export default function MoodTracker() {
                   <span>¿Qué ha pasado hoy?</span>
                   <span className="text-[10px] opacity-50">Opcional</span>
                 </label>
-                <textarea 
+                <textarea
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   maxLength={150}
-                  className="w-full bg-surface-container-high border border-outline-variant focus:border-primary focus:ring-1 text-on-surface font-body p-4 rounded-lg min-h-[120px] transition-all resize-none outline-none" 
+                  className="w-full bg-surface-container-high border border-outline-variant focus:border-primary focus:ring-1 text-on-surface font-body p-4 rounded-lg min-h-[120px] transition-all resize-none outline-none"
                   placeholder="Escribe aquí tus pensamientos..."
                 />
                 <div className="text-[10px] text-right text-on-surface-variant/40">
@@ -409,11 +408,10 @@ export default function MoodTracker() {
                       key={level}
                       type="button"
                       onClick={() => setEnergy(level)}
-                      className={`flex-1 py-2 text-xs font-bold rounded-md transition-all capitalize ${
-                        energy === level 
-                          ? 'bg-surface shadow-sm text-on-surface border border-outline-variant' 
+                      className={`flex-1 py-2 text-xs font-bold rounded-md transition-all capitalize ${energy === level
+                          ? 'bg-surface shadow-sm text-on-surface border border-outline-variant'
                           : 'text-on-surface-variant hover:bg-surface-bright'
-                      }`}
+                        }`}
                     >
                       {level}
                     </button>
@@ -427,28 +425,27 @@ export default function MoodTracker() {
                   <span>Una palabra para hoy</span>
                   <span className="text-[10px] opacity-50">Opcional</span>
                 </label>
-                <input 
+                <input
                   type="text"
                   value={word}
                   onChange={(e) => setWord(e.target.value)}
                   maxLength={30}
-                  className="w-full bg-surface-container-high border border-outline-variant focus:border-primary focus:ring-1 text-on-surface font-body p-4 rounded-lg transition-all outline-none" 
-                  placeholder="P. ej: Gratitud" 
+                  className="w-full bg-surface-container-high border border-outline-variant focus:border-primary focus:ring-1 text-on-surface font-body p-4 rounded-lg transition-all outline-none"
+                  placeholder="P. ej: Gratitud"
                 />
               </div>
 
               {/* Submit Button */}
-              <motion.button 
+              <motion.button
                 type="submit"
                 disabled={!selectedMood || !energy}
                 whileHover={{ scale: (!selectedMood || !energy) ? 1 : 1.02 }}
                 whileTap={{ scale: (!selectedMood || !energy) ? 1 : 0.95 }}
                 animate={isSaving ? { scale: [1, 1.05, 1], backgroundColor: ['#2563eb', '#3b82f6', '#2563eb'] } : {}}
-                className={`w-full py-4 font-bold font-headline text-sm rounded-lg transition-all shadow-sm ${
-                  (!selectedMood || !energy) 
-                    ? 'bg-surface-container-high text-on-surface-variant cursor-not-allowed border border-outline-variant' 
+                className={`w-full py-4 font-bold font-headline text-sm rounded-lg transition-all shadow-sm ${(!selectedMood || !energy)
+                    ? 'bg-surface-container-high text-on-surface-variant cursor-not-allowed border border-outline-variant'
                     : 'bg-primary hover:bg-primary-dim text-white'
-                }`}
+                  }`}
               >
                 {isSaving ? 'Guardado ✨' : 'Guardar Registro'}
               </motion.button>
